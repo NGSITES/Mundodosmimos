@@ -3,140 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Premium | Mundo dos Mimos</title>
+    <title>Mundo dos Mimos | Catálogo Premium</title>
+    
+    <link rel="icon" type="image/png" href="icon-512.png?v=1" sizes="512x512">
+    <link rel="apple-touch-icon" href="icon-512.png?v=1">
+    <link rel="shortcut icon" href="icon-512.png?v=1">
+    
+    <meta name="theme-color" content="#6A0DAD">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --roxo: #6A0DAD;
-            --roxo-escuro: #4B0082;
             --roxo-claro: #F3E5F5;
             --texto: #2D2D2D;
-            --branco-puro: #ffffff;
         }
 
-        /* FUNDO SOFISTICADO */
+        /* FUNDO PREMIUM */
         body { 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
+            font-family: 'Inter', sans-serif; margin: 0; 
             background: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('5.png');
             background-size: cover; background-attachment: fixed; background-position: center;
-            color: var(--texto); scroll-behavior: smooth;
+            color: var(--texto);
         }
 
-        /* NAVBAR PREMIUM */
         nav {
-            padding: 25px; text-align: center; background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 25px; text-align: center; background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             position: sticky; top: 0; z-index: 1000;
         }
-        .logo-img { max-width: 170px; height: auto; transition: 0.3s; }
+        .logo-img { max-width: 170px; height: auto; }
 
-        header { 
-            text-align: center; padding: 60px 20px;
-            background: rgba(106, 13, 173, 0.03); margin-bottom: 20px;
-        }
-        header h1 { font-weight: 300; font-size: 2.5rem; letter-spacing: -1px; margin: 0; color: var(--roxo); }
-        header p { color: #666; font-size: 1.1rem; margin-top: 10px; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        /* GRID DE PRODUTOS */
-        .catalog-grid {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
-            gap: 30px; padding-bottom: 80px;
-        }
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
 
         .product-card {
-            background: var(--branco-puro); border-radius: 24px; padding: 25px;
-            text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: #fff; border-radius: 24px; padding: 25px; text-align: center; cursor: pointer; transition: 0.4s;
             border: 2px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            position: relative;
         }
 
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(106, 13, 173, 0.12);
-        }
-
-        /* BORDA NO ITEM SELECIONADO (Feedback da imagem ca6752) */
+        /* BORDA NO ITEM SELECIONADO */
         .product-card.active-card {
             border-color: var(--roxo);
-            box-shadow: 0 0 20px rgba(106, 13, 173, 0.2);
+            box-shadow: 0 0 25px rgba(106, 13, 173, 0.25);
             transform: scale(1.02);
         }
 
         .product-card img { width: 100%; height: 230px; object-fit: contain; margin-bottom: 20px; }
-        .product-card h4 { margin: 10px 0; font-weight: 600; font-size: 1.1rem; }
-        .product-card .status { font-size: 0.85rem; color: var(--roxo); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* PAINEL DE EXPANSÃO */
         .details-expanded {
-            grid-column: 1 / -1; 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 30px; padding: 50px;
-            margin: 15px 0 40px 0;
-            display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px;
-            border: 2px solid var(--roxo);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            grid-column: 1 / -1; background: #fff; border-radius: 30px; padding: 40px;
+            margin: 15px 0 40px 0; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px;
+            border: 2px solid var(--roxo); box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            animation: slideUp 0.5s ease;
         }
 
-        @media (max-width: 850px) { 
-            .details-expanded { grid-template-columns: 1fr; padding: 30px; gap: 30px; } 
-        }
+        @media (max-width: 850px) { .details-expanded { grid-template-columns: 1fr; padding: 20px; } }
 
-        .view-image { 
-            background: #f9f9f9; border-radius: 20px; padding: 20px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .view-image img { max-width: 100%; max-height: 450px; object-fit: contain; border-radius: 10px; }
+        .view-image { background: #f9f9f9; border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: center; }
+        .view-image img { max-width: 100%; max-height: 400px; object-fit: contain; }
 
-        /* OPÇÕES ESTILIZADAS */
-        .options-panel h2 { font-size: 2rem; margin-top: 0; font-weight: 600; }
-        .label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: #999; display: block; margin-bottom: 15px; }
+        .color-dot { width: 40px; height: 40px; border-radius: 50%; display: inline-block; margin: 5px; cursor: pointer; border: 2px solid #eee; }
+        .color-dot.selected { outline: 3px solid var(--roxo); outline-offset: 3px; transform: scale(1.1); }
         
-        .color-group { display: flex; gap: 15px; margin-bottom: 30px; }
-        .color-dot {
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-            border: 2px solid #eee; transition: 0.3s; position: relative;
-        }
-        .color-dot.selected { 
-            transform: scale(1.2); border-color: var(--roxo);
-            box-shadow: 0 0 15px rgba(106, 13, 173, 0.3);
-            outline: 3px solid var(--roxo); outline-offset: 3px;
-        }
-
-        .size-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
-        .size-btn {
-            padding: 12px 25px; border: 1px solid #eee; background: white;
-            border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s;
-        }
-        .size-btn:hover { border-color: var(--roxo); }
-        .size-btn.selected { background: var(--roxo); color: white; border-color: var(--roxo); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(106, 13, 173, 0.3); }
+        .size-btn { padding: 12px 20px; border: 2px solid #eee; background: white; border-radius: 12px; margin: 5px; cursor: pointer; font-weight: 600; }
+        .size-btn.selected { border-color: var(--roxo); background: var(--roxo-claro); color: var(--roxo); }
 
         .btn-whatsapp {
-            background: #25D366; color: white; text-decoration: none; padding: 22px;
-            border-radius: 18px; display: block; text-align: center; font-weight: 600;
-            font-size: 1.1rem; transition: 0.4s; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+            background: #25D366; color: white; text-decoration: none; padding: 20px;
+            border-radius: 18px; display: flex; align-items: center; justify-content: center; gap: 12px;
+            font-weight: 600; font-size: 1.1rem; transition: 0.3s;
         }
-        .btn-whatsapp:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3); }
+        .btn-whatsapp svg { width: 24px; height: 24px; fill: white; }
 
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(40px) scale(0.98); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <nav><img src="3.png" alt="Logo" class="logo-img"></nav>
-
-<header>
-    <h1>Exclusividade em cada detalhe</h1>
-    <p>Selecione uma peça para personalizar sua experiência</p>
-</header>
 
 <div class="container">
     <div class="catalog-grid" id="main-grid"></div>
@@ -151,7 +97,7 @@
         { id: 5, nome: "Almofada Soft", cores: ["Branco", "Rosa"], sizes: ["40x40cm"] }
     ];
 
-    let currentOpen = null;
+    let currentOpenId = null;
     let selection = { color: "", size: "" };
 
     function render() {
@@ -160,26 +106,17 @@
             <div class="product-card" id="card-${p.id}" onclick="toggleDetails(${p.id})">
                 <img src="${p.nome} ${p.id}.png" onerror="this.src='https://via.placeholder.com/250?text=${p.nome}'">
                 <h4>${p.nome}</h4>
-                <div class="status">Ver Detalhes</div>
+                <div style="color:var(--roxo); font-weight:600; font-size:12px;">VER DETALHES</div>
             </div>
             <div id="box-${p.id}" style="display:contents;"></div>
         `).join('');
     }
 
     function toggleDetails(id) {
-        const card = document.getElementById(`card-${id}`);
-
-        if (currentOpen === id) {
-            closeAll();
-            currentOpen = null;
-            return;
-        }
-
+        if (currentOpenId === id) { closeAll(); currentOpenId = null; return; }
         closeAll();
-        currentOpen = id;
-        
-        // Adiciona a borda no card selecionado
-        card.classList.add('active-card');
+        currentOpenId = id;
+        document.getElementById(`card-${id}`).classList.add('active-card');
         
         const item = products.find(p => p.id === id);
         const container = document.getElementById(`box-${id}`);
@@ -189,40 +126,37 @@
                 <div class="view-image">
                     <img src="${item.nome} ${item.id}.png" onerror="this.src='https://via.placeholder.com/400?text=${item.nome}'">
                 </div>
-                <div class="options-panel">
+                <div>
                     <h2>${item.nome}</h2>
-                    
-                    <span class="label">Paleta de Cores</span>
-                    <div class="color-group">
+                    <p>Configure o seu orçamento exclusivo:</p>
+                    <div style="margin-bottom:20px;">
+                        <strong>Escolha a Cor:</strong><br>
                         ${item.cores.map(c => `<div class="color-dot" style="background:${getHex(c)}" onclick="pickColor(this, '${c}', '${item.nome}', ${id})"></div>`).join('')}
                     </div>
-                    
-                    <span class="label">Tamanhos Disponíveis</span>
-                    <div class="size-group">
+                    <div style="margin-bottom:20px;">
+                        <strong>Tamanho:</strong><br>
                         ${item.sizes.map(s => `<button class="size-btn" onclick="pickSize(this, '${s}', '${item.nome}', ${id})">${s}</button>`).join('')}
                     </div>
-
                     <a href="#" id="wa-btn-${id}" class="btn-whatsapp" style="opacity:0.3; pointer-events:none;">
-                        Solicitar Orçamento Exclusivo
+                        <svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.7 17.7 69.4 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.3-16.4-14.6-27.4-32.7-30.7-38.2-3.2-5.6-.4-8.6 2.4-11.4 2.6-2.5 5.6-6.5 8.3-9.8 2.8-3.3 3.7-5.5 5.5-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                        Solicitar no WhatsApp
                     </a>
                 </div>
             </div>
         `;
         
         setTimeout(() => {
-            window.scrollTo({ top: card.offsetTop - 100, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById(`card-${id}`).offsetTop - 100, behavior: 'smooth' });
         }, 100);
     }
 
     function closeAll() {
-        // Remove a borda de todos os cards
         document.querySelectorAll('.product-card').forEach(c => c.classList.remove('active-card'));
-        // Limpa as caixas de detalhes
         products.forEach(p => document.getElementById(`box-${p.id}`).innerHTML = '');
     }
 
     function getHex(cor) {
-        const colors = { "Branco": "#ffffff", "Roxo": "#6A0DAD", "Preto": "#1a1a1a", "Rosa": "#FFB6C1", "Azul": "#4682B4" };
+        const colors = { "Branco": "#fff", "Roxo": "#6A0DAD", "Preto": "#1a1a1a", "Rosa": "#FFB6C1", "Azul": "#4682B4" };
         return colors[cor] || "#ddd";
     }
 
@@ -243,15 +177,14 @@
     function updateLink(name, id) {
         const btn = document.getElementById(`wa-btn-${id}`);
         if(selection.color && selection.size) {
-            btn.style.opacity = "1";
-            btn.style.pointerEvents = "all";
+            btn.style.opacity = "1"; btn.style.pointerEvents = "all";
             const phone = "5511999999999"; 
-            const msg = `Olá Mundo dos Mimos! Gostaria de um orçamento personalizado:\n\n*Item:* ${name}\n*Cor:* ${selection.color}\n*Tamanho:* ${selection.size}`;
+            const msg = `Olá! Gostaria de um orçamento:\n*${name}*\nCor: ${selection.color}\nTamanho: ${selection.size}`;
             btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
         }
     }
 
-    render();
+    window.onload = render;
 </script>
 
 </body>
