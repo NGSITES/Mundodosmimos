@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Premium | Personalizados</title>
+    <style>
+        :root {
+            --roxo: #6A0DAD;
+            --roxo-escuro: #4B0082;
+            --texto: #2D2D2D;
+        }
+
+        /* CONFIGURAÇÃO DO FUNDO (5.png) */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            background-image: url('5.png'); /* SEU FUNDO */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: var(--texto);
+            line-height: 1.6;
+        }
+
+        /* Navbar e LOGO (3.png) */
+        nav {
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9); /* Branco translúcido */
+            border-bottom: 1px solid rgba(106, 13, 173, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-img {
+            max-width: 150px; /* Ajuste o tamanho da logo aqui */
+            height: auto;
+        }
+
+        header { 
+            text-align: center; 
+            padding: 60px 20px; 
+            background: rgba(106, 13, 173, 0.05); 
+            backdrop-filter: blur(5px); /* Efeito de vidro */
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* PAINEL DE DETALHES */
+        .details-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--roxo);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) { .details-panel { grid-template-columns: 1fr; } }
+
+        /* GRELHA DE PRODUTOS */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(2px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--roxo);
+            background: #fff;
+        }
+
+        .product-card img { width: 100%; height: 250px; object-fit: contain; padding: 15px; box-sizing: border-box; }
+        .product-card .info { padding: 20px; border-top: 1px solid #eee; }
+        
+        /* BOTÕES E SELETORES */
+        .color-dot {
+            width: 30px; height: 30px; border-radius: 50%; display: inline-block;
+            margin-right: 10px; cursor: pointer; border: 2px solid #ddd; transition: 0.3s;
+        }
+        .color-dot.selected { transform: scale(1.2); border-color: var(--roxo); outline: 2px solid var(--roxo); outline-offset: 2px; }
+
+        .size-btn {
+            background: white; border: 1px solid #ddd; padding: 10px 15px; border-radius: 8px;
+            margin: 5px; cursor: pointer; transition: 0.3s;
+        }
+        .size-btn.selected { background: var(--roxo); color: white; border-color: var(--roxo); }
+
+        .btn-whatsapp {
+            background: #25D366; color: white; text-decoration: none;
+            padding: 20px; border-radius: 12px; display: block; text-align: center;
+            font-weight: bold; font-size: 18px; margin-top: 20px; transition: 0.3s;
+        }
+        .btn-whatsapp:hover { background: #128C7E; transform: scale(1.02); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <img src="3.png" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/150x50?text=LOGO+3.PNG'">
+</nav>
+
+<header>
+    <h1>Catálogo de Itens Personalizados</h1>
+    <p>Escolha um modelo e consulte o valor via WhatsApp</p>
+</header>
+
+<div class="container">
+    <div id="detail-area"></div>
+
+    <div class="catalog-grid" id="main-grid">
+        </div>
+</div>
+
+<script>
+    // LISTA DE ITENS - O NOME deve ser igual ao do arquivo .png
+    // Exemplo: "Caneca Cerâmica 1.png"
+    const inventory = [
+        { id: 1, name: "Caneca Cerâmica", colors: ["Branco", "Roxo", "Preto"], sizes: ["325ml"] },
+        { id: 2, name: "Camiseta Premium", colors: ["Preto", "Branco", "Roxo"], sizes: ["P", "M", "G", "GG"] },
+        { id: 3, name: "Garrafa Térmica", colors: ["Rosa", "Azul", "Preto"], sizes: ["600ml", "1L"] },
+        { id: 4, name: "Prato Decorativo", colors: ["Branco"], sizes: ["20cm", "25cm"] },
+        { id: 5, name: "Almofada Soft", colors: ["Branco", "Rosa"], sizes: ["40x40cm"] }
+    ];
+
+    const grid = document.getElementById('main-grid');
+    let userSelection = { color: "", size: "" };
+
+    // FUNÇÃO PARA CRIAR O CATÁLOGO USANDO NOME E NUMERO.PNG
+    function renderCatalog() {
+        grid.innerHTML = inventory.map(item => `
+            <div class="product-card" onclick="openDetails(${item.id})">
+                <img src="${item.name} ${item.id}.png" onerror="this.src='https://via.placeholder.com/250?text=${item.name}'">
+                <div class="info">
+                    <h4>${item.name}</h4>
+                    <p style="color: var(--roxo); font-weight: bold;">Consultar Preço</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openDetails(id) {
+        const item = inventory.find(p => p.id === id);
+        const area = document.getElementById('detail-area');
+        userSelection = { color: "", size: "" };
+
+        window.scrollTo({ top: 100, behavior: 'smooth' });
+
+        area.innerHTML = `
+            <div class="details-panel">
+                <div>
+                    <h2 style="color: var(--roxo)">${item.name}</h2>
+                    <p>Personalize as opções abaixo para consultar o valor no WhatsApp.</p>
+                </div>
+                <div>
+                    <strong>Cor:</strong>
+                    <div style="margin: 10px 0 20px 0">
+                        ${item.colors.map(c => `<div class="color-dot" style="background:${getHex(c)}" onclick="selectColor(this, '${c}', '${item.name}')"></div>`).join('')}
+                    </div>
+
+                    <strong>Tamanho:</strong>
+                    <div style="margin-top:10px">
+                        ${item.sizes.map(s => `<button class="size-btn" onclick="selectSize(this, '${s}', '${item.name}')">${s}</button>`).join('')}
+                    </div>
+
+                    <a href="#" id="wa-btn" class="btn-whatsapp" style="opacity:0.5; pointer-events:none;">
+                        Consultar via WhatsApp
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    function getHex(cor) {
+        const colors = { "Branco": "#fff", "Roxo": "#6A0DAD", "Preto": "#1a1a1a", "Rosa": "#FFB6C1", "Azul": "#4682B4" };
+        return colors[cor] || "#ddd";
+    }
+
+    function selectColor(el, color, name) {
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+        el.classList.add('selected');
+        userSelection.color = color;
+        checkSelection();
+    }
+
+    function selectSize(el, size, name) {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        userSelection.size = size;
+        checkSelection();
+    }
+
+    function checkSelection() {
+        const btn = document.getElementById('wa-btn');
+        if(userSelection.color && userSelection.size) {
+            btn.style.opacity = "1";
+            btn.style.pointerEvents = "all";
+            const currentName = document.querySelector('.details-panel h2').innerText;
+            const phone = "5511999999999"; // O SEU NÚMERO
+            const msg = `Olá! Tenho interesse no seguinte item:\n\n*Item:* ${currentName}\n*Cor:* ${userSelection.color}\n*Tamanho:* ${userSelection.size}\n\nQual o valor para personalização?`;
+            btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        }
+    }
+
+    // Inicializa o catálogo ao carregar a página
+    renderCatalog();
+</script>
+
+</body>
+</html>
