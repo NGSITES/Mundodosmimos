@@ -11,11 +11,11 @@
             --texto: #333;
         }
 
-        /* FUNDO 5.png */
+        /* FUNDO 5.png MAIS OPACO PARA MELHOR LEITURA */
         body { 
             font-family: 'Inter', sans-serif; 
             margin: 0; 
-            background-image: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('5.png');
+            background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('5.png');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -35,7 +35,7 @@
 
         header { 
             text-align: center; padding: 40px 20px;
-            background: rgba(106, 13, 173, 0.85); color: white;
+            background: rgba(106, 13, 173, 0.9); color: white;
             margin-bottom: 30px;
         }
 
@@ -59,43 +59,42 @@
             border: 1px solid #eee;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .product-card:hover { transform: translateY(-8px); border-color: var(--roxo); }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--roxo); }
         .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
 
-        /* ABA DE DETALHES (EXPANDIR ABAIXO COM VISUALIZAÇÃO) */
+        /* ABA DE DETALHES (EMBAIXO DO ITEM) */
         .details-expanded {
-            grid-column: 1 / -1; /* OCUPA TODA A LARGURA */
+            grid-column: 1 / -1; /* Ocupa a largura total da linha */
             background: #ffffff;
             border-radius: 20px;
             padding: 35px;
             margin: 10px 0 30px 0;
             display: grid;
-            grid-template-columns: 1fr 1fr; /* DIVISÃO EM DUAS COLUNAS */
+            grid-template-columns: 1fr 1fr; /* Imagem de um lado, opções do outro */
             gap: 40px;
             border: 2px solid var(--roxo);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             animation: slideDown 0.4s ease-out;
         }
 
-        .details-image-view img {
+        .view-image-container img {
             width: 100%;
             max-height: 400px;
             object-fit: contain;
             border-radius: 15px;
             background: #f9f9f9;
-            padding: 10px;
         }
 
         @media (max-width: 768px) { 
             .details-expanded { grid-template-columns: 1fr; padding: 20px; } 
         }
 
-        /* BOTÕES E CORES */
+        /* OPÇÕES DE SELEÇÃO */
         .color-dot { 
             width: 35px; height: 35px; border-radius: 50%; display: inline-block; 
             margin: 5px; cursor: pointer; border: 2px solid #ddd; transition: 0.3s;
         }
-        .color-dot.selected { border-color: var(--roxo); transform: scale(1.2); box-shadow: 0 0 10px rgba(106,13,173,0.4); }
+        .color-dot.selected { border-color: var(--roxo); transform: scale(1.15); outline: 2px solid var(--roxo); outline-offset: 2px; }
         
         .size-btn { 
             padding: 12px 20px; border: 1px solid #ddd; background: #fff; 
@@ -110,7 +109,7 @@
         }
 
         @keyframes slideDown { 
-            from { opacity: 0; transform: translateY(-30px); } 
+            from { opacity: 0; transform: translateY(-20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
     </style>
@@ -121,11 +120,12 @@
 
 <header>
     <h1>Catálogo Mundo dos Mimos</h1>
-    <p>Clique no item para personalizar e ver detalhes</p>
+    <p>Clique no produto para ver opções e personalizar</p>
 </header>
 
 <div class="container">
-    <div class="catalog-grid" id="main-grid"></div>
+    <div class="catalog-grid" id="main-grid">
+        </div>
 </div>
 
 <script>
@@ -148,7 +148,7 @@
                 <h4>${p.nome}</h4>
                 <div style="color:var(--roxo); font-weight:bold;">Consultar Preço</div>
             </div>
-            <div id="details-container-${p.id}" style="display:contents;"></div>
+            <div id="details-anchor-${p.id}" style="display:contents;"></div>
         `).join('');
     }
 
@@ -162,45 +162,42 @@
         closeAll();
         currentOpenId = id;
         const item = products.find(p => p.id === id);
-        const container = document.getElementById(`details-container-${id}`);
+        const anchor = document.getElementById(`details-anchor-${id}`);
 
-        container.innerHTML = `
+        anchor.innerHTML = `
             <div class="details-expanded">
-                <div class="details-image-view">
+                <div class="view-image-container">
                     <img src="${item.nome} ${item.id}.png" onerror="this.src='https://via.placeholder.com/400?text=${item.nome}'">
                 </div>
-
                 <div>
-                    <h2 style="color:var(--roxo); margin-top:0;">${item.nome}</h2>
-                    <p>Configure as opções do seu produto personalizado:</p>
+                    <h2 style="color:var(--roxo); margin-top:0;">Personalizar ${item.nome}</h2>
+                    <p>Selecione as opções para o seu pedido:</p>
                     
-                    <strong>Escolha a Cor:</strong><br>
-                    <div style="margin: 10px 0 20px 0;">
+                    <strong>Cor disponível:</strong><br>
+                    <div style="margin: 15px 0;">
                         ${item.colors.map(c => `<div class="color-dot" style="background:${getHex(c)}" onclick="selectColor(this, '${c}', '${item.nome}', ${id})"></div>`).join('')}
                     </div>
                     
-                    <strong>Escolha o Tamanho:</strong><br>
+                    <strong>Tamanho:</strong><br>
                     <div style="margin-top:10px;">
                         ${item.sizes.map(s => `<button class="size-btn" onclick="selectSize(this, '${s}', '${item.nome}', ${id})">${s}</button>`).join('')}
                     </div>
 
                     <a href="#" id="wa-btn-${id}" class="btn-whatsapp" style="opacity:0.5; pointer-events:none;">
-                        Consultar via WhatsApp
+                        Pedir Orçamento via WhatsApp
                     </a>
                 </div>
             </div>
         `;
         
         setTimeout(() => {
-            const el = document.getElementById(`card-${id}`);
-            window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+            document.getElementById(`card-${id}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
     }
 
     function closeAll() {
         products.forEach(p => {
-            const div = document.getElementById(`details-container-${p.id}`);
-            if(div) div.innerHTML = '';
+            document.getElementById(`details-anchor-${p.id}`).innerHTML = '';
         });
     }
 
@@ -229,7 +226,7 @@
             btn.style.opacity = "1";
             btn.style.pointerEvents = "all";
             const phone = "5511999999999"; 
-            const msg = `Olá! Tenho interesse no item:\n*${name}*\nCor: ${userSelection.color}\nTamanho: ${userSelection.size}`;
+            const msg = `Olá! Tenho interesse em:\n*${name}*\nCor: ${userSelection.color}\nTamanho: ${userSelection.size}`;
             btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
         }
     }
