@@ -18,7 +18,6 @@
             --whatsapp: #25D366;
         }
 
-        /* FUNDO SOFISTICADO COM 5.png */
         body { 
             font-family: 'Inter', sans-serif; margin: 0; 
             background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('5.png');
@@ -26,7 +25,6 @@
             color: var(--texto); scroll-behavior: smooth;
         }
 
-        /* NAVBAR COM LOGO 3.png */
         nav {
             padding: 20px; text-align: center; background: #fff;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
@@ -36,7 +34,7 @@
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* GRID DE PRODUTOS */
+        /* GRADE DE PRODUTOS */
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
 
         .product-card {
@@ -44,7 +42,6 @@
             border: 2px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,0.02);
         }
 
-        /* BORDA NO ITEM SELECIONADO (O que você pediu) */
         .product-card.active-card {
             border-color: var(--roxo);
             box-shadow: 0 0 25px rgba(106, 13, 173, 0.2);
@@ -53,7 +50,7 @@
 
         .product-card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 15px; }
 
-        /* ABA DE EXPANSÃO (ABAIXO DO ITEM) */
+        /* ABA DE EXPANSÃO */
         .details-expanded {
             grid-column: 1 / -1; background: #fff; border-radius: 30px; padding: 40px;
             margin: 15px 0 40px 0; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px;
@@ -63,32 +60,38 @@
 
         @media (max-width: 850px) { .details-expanded { grid-template-columns: 1fr; padding: 20px; } }
 
-        /* CARROSSEL DE IMAGENS (SLIDE) */
+        /* CARROSSEL COM EFEITO SUAVE */
         .slide-container {
             position: relative; background: #f9f9f9; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center; min-height: 350px;
+            display: flex; align-items: center; justify-content: center; min-height: 380px;
             overflow: hidden;
         }
-        .slide-container img { max-width: 100%; max-height: 380px; object-fit: contain; }
         
+        #main-img { 
+            max-width: 100%; max-height: 380px; object-fit: contain; 
+            transition: opacity 0.3s ease-in-out; /* Efeito de fade */
+        }
+        
+        .fade-out { opacity: 0; }
+
         .slide-arrow {
             position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.8); border: none; font-size: 30px; 
-            color: var(--roxo); cursor: pointer; width: 45px; height: 45px;
+            background: rgba(255,255,255,0.9); border: none; font-size: 35px; 
+            color: var(--roxo); cursor: pointer; width: 50px; height: 50px;
             border-radius: 50%; z-index: 10; font-weight: bold; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
         .slide-arrow:hover { background: var(--roxo); color: #fff; }
         .arrow-left { left: 15px; }
         .arrow-right { right: 15px; }
 
-        /* FEEDBACK DE SELEÇÃO (Bordas) */
+        /* BOTÕES E CORES */
         .color-dot { width: 40px; height: 40px; border-radius: 50%; display: inline-block; margin: 5px; cursor: pointer; border: 2px solid #eee; transition: 0.2s; }
         .color-dot.selected { outline: 3px solid var(--roxo); outline-offset: 3px; transform: scale(1.1); }
-        
         .size-btn { padding: 12px 20px; border: 2px solid #eee; background: white; border-radius: 12px; margin: 5px; cursor: pointer; font-weight: 600; }
         .size-btn.selected { border-color: var(--roxo); background: var(--roxo-claro); color: var(--roxo); }
 
-        /* BOTÃO WHATSAPP COM ÍCONE */
+        /* BOTÃO WHATSAPP */
         .btn-whatsapp {
             background: var(--whatsapp); color: white; text-decoration: none; padding: 20px;
             border-radius: 18px; display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -108,11 +111,10 @@
 </div>
 
 <script>
-    // LISTA DE ITENS (Pode adicionar quantos quiser aqui)
     const products = [
         { id: 1, nome: "Caneca Cerâmica", cores: ["Branco", "Roxo", "Preto"], sizes: ["325ml", "450ml"] },
         { id: 2, nome: "Camiseta Premium", cores: ["Preto", "Branco"], sizes: ["P", "M", "G", "GG"] },
-        { id: 3, nome: "Garrafa Térmica", cores: ["Rosa", "Azul", "Preto"], sizes: ["600ml", "1L"] },
+        { id: 3, nome: "Garrafa Térmica", cores: ["Rosa", "Azul"], sizes: ["600ml", "1L"] },
         { id: 4, nome: "Prato Decorativo", cores: ["Branco"], sizes: ["20cm", "25cm"] },
         { id: 5, nome: "Almofada Soft", cores: ["Branco", "Rosa"], sizes: ["40x40cm"] }
     ];
@@ -150,12 +152,11 @@
                     <img id="main-img" src="${item.nome} ${item.id}.png" onerror="this.src='https://via.placeholder.com/400?text=${item.nome}'">
                     <button class="slide-arrow arrow-right" onclick="changeSlide(1, '${item.nome}', ${item.id})">›</button>
                 </div>
-
                 <div>
                     <h2 style="margin-top:0;">${item.nome}</h2>
                     <p>Personalize as suas opções:</p>
                     <div style="margin-bottom:20px;">
-                        <strong>Escolha a Cor:</strong><br>
+                        <strong>Cor:</strong><br>
                         ${item.cores.map(c => `<div class="color-dot" style="background:${getHex(c)}" onclick="pickColor(this, '${c}', '${item.nome}', ${id})"></div>`).join('')}
                     </div>
                     <div style="margin-bottom:20px;">
@@ -169,27 +170,29 @@
                 </div>
             </div>
         `;
-        
-        setTimeout(() => {
-            window.scrollTo({ top: document.getElementById(`card-${id}`).offsetTop - 100, behavior: 'smooth' });
-        }, 100);
+        setTimeout(() => { window.scrollTo({ top: document.getElementById(`card-${id}`).offsetTop - 100, behavior: 'smooth' }); }, 100);
     }
 
     function changeSlide(dir, name, id) {
-        currentSlide += dir;
         const img = document.getElementById('main-img');
-        
-        let nextSrc = (currentSlide <= 0) 
-            ? `${name} ${id}.png` 
-            : `${name} ${id}-${currentSlide + 1}.png`;
+        img.classList.add('fade-out');
 
-        let test = new Image();
-        test.src = nextSrc;
-        test.onload = () => { img.src = nextSrc; };
-        test.onerror = () => {
-            if (dir > 0) { currentSlide = 0; img.src = `${name} ${id}.png`; }
-            else { currentSlide = 0; }
-        };
+        setTimeout(() => {
+            currentSlide += dir;
+            let nextSrc = (currentSlide <= 0) ? `${name} ${id}.png` : `${name} ${id}-${currentSlide + 1}.png`;
+
+            let test = new Image();
+            test.src = nextSrc;
+            test.onload = () => { 
+                img.src = nextSrc; 
+                img.classList.remove('fade-out');
+            };
+            test.onerror = () => {
+                currentSlide = 0; 
+                img.src = `${name} ${id}.png`;
+                img.classList.remove('fade-out');
+            };
+        }, 300);
     }
 
     function closeAll() {
