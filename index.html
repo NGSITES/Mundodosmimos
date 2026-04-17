@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mundo dos Mimos | Catálogo Premium</title>
     
-    <link rel="icon" type="image/png" href="icon-512.png?v=1" sizes="512x512">
-    <link rel="apple-touch-icon" href="icon-512.png?v=1">
-    <link rel="shortcut icon" href="icon-512.png?v=1">
-    
+    <link rel="icon" type="image/png" href="icon-512.png" sizes="512x512">
+    <link rel="apple-touch-icon" href="icon-512.png">
     <meta name="theme-color" content="#6A0DAD">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -17,25 +15,28 @@
             --roxo: #6A0DAD;
             --roxo-claro: #F3E5F5;
             --texto: #2D2D2D;
+            --whatsapp: #25D366;
         }
 
-        /* FUNDO PREMIUM */
+        /* FUNDO SOFISTICADO COM 5.png */
         body { 
             font-family: 'Inter', sans-serif; margin: 0; 
-            background: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('5.png');
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('5.png');
             background-size: cover; background-attachment: fixed; background-position: center;
-            color: var(--texto);
+            color: var(--texto); scroll-behavior: smooth;
         }
 
+        /* NAVBAR COM LOGO 3.png */
         nav {
-            padding: 25px; text-align: center; background: #fff;
+            padding: 20px; text-align: center; background: #fff;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             position: sticky; top: 0; z-index: 1000;
         }
-        .logo-img { max-width: 170px; height: auto; }
+        .logo-img { max-width: 160px; height: auto; }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
+        /* GRID DE PRODUTOS */
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
 
         .product-card {
@@ -43,15 +44,16 @@
             border: 2px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,0.02);
         }
 
-        /* BORDA NO ITEM SELECIONADO */
+        /* BORDA NO ITEM SELECIONADO (O que você pediu) */
         .product-card.active-card {
             border-color: var(--roxo);
-            box-shadow: 0 0 25px rgba(106, 13, 173, 0.25);
+            box-shadow: 0 0 25px rgba(106, 13, 173, 0.2);
             transform: scale(1.02);
         }
 
-        .product-card img { width: 100%; height: 230px; object-fit: contain; margin-bottom: 20px; }
+        .product-card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 15px; }
 
+        /* ABA DE EXPANSÃO (ABAIXO DO ITEM) */
         .details-expanded {
             grid-column: 1 / -1; background: #fff; border-radius: 30px; padding: 40px;
             margin: 15px 0 40px 0; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px;
@@ -61,17 +63,34 @@
 
         @media (max-width: 850px) { .details-expanded { grid-template-columns: 1fr; padding: 20px; } }
 
-        .view-image { background: #f9f9f9; border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: center; }
-        .view-image img { max-width: 100%; max-height: 400px; object-fit: contain; }
+        /* CARROSSEL DE IMAGENS (SLIDE) */
+        .slide-container {
+            position: relative; background: #f9f9f9; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; min-height: 350px;
+            overflow: hidden;
+        }
+        .slide-container img { max-width: 100%; max-height: 380px; object-fit: contain; }
+        
+        .slide-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.8); border: none; font-size: 30px; 
+            color: var(--roxo); cursor: pointer; width: 45px; height: 45px;
+            border-radius: 50%; z-index: 10; font-weight: bold; transition: 0.3s;
+        }
+        .slide-arrow:hover { background: var(--roxo); color: #fff; }
+        .arrow-left { left: 15px; }
+        .arrow-right { right: 15px; }
 
-        .color-dot { width: 40px; height: 40px; border-radius: 50%; display: inline-block; margin: 5px; cursor: pointer; border: 2px solid #eee; }
+        /* FEEDBACK DE SELEÇÃO (Bordas) */
+        .color-dot { width: 40px; height: 40px; border-radius: 50%; display: inline-block; margin: 5px; cursor: pointer; border: 2px solid #eee; transition: 0.2s; }
         .color-dot.selected { outline: 3px solid var(--roxo); outline-offset: 3px; transform: scale(1.1); }
         
         .size-btn { padding: 12px 20px; border: 2px solid #eee; background: white; border-radius: 12px; margin: 5px; cursor: pointer; font-weight: 600; }
         .size-btn.selected { border-color: var(--roxo); background: var(--roxo-claro); color: var(--roxo); }
 
+        /* BOTÃO WHATSAPP COM ÍCONE */
         .btn-whatsapp {
-            background: #25D366; color: white; text-decoration: none; padding: 20px;
+            background: var(--whatsapp); color: white; text-decoration: none; padding: 20px;
             border-radius: 18px; display: flex; align-items: center; justify-content: center; gap: 12px;
             font-weight: 600; font-size: 1.1rem; transition: 0.3s;
         }
@@ -89,9 +108,10 @@
 </div>
 
 <script>
+    // LISTA DE ITENS (Pode adicionar quantos quiser aqui)
     const products = [
         { id: 1, nome: "Caneca Cerâmica", cores: ["Branco", "Roxo", "Preto"], sizes: ["325ml", "450ml"] },
-        { id: 2, nome: "Camiseta Premium", cores: ["Preto", "Branco", "Roxo"], sizes: ["P", "M", "G", "GG"] },
+        { id: 2, nome: "Camiseta Premium", cores: ["Preto", "Branco"], sizes: ["P", "M", "G", "GG"] },
         { id: 3, nome: "Garrafa Térmica", cores: ["Rosa", "Azul", "Preto"], sizes: ["600ml", "1L"] },
         { id: 4, nome: "Prato Decorativo", cores: ["Branco"], sizes: ["20cm", "25cm"] },
         { id: 5, nome: "Almofada Soft", cores: ["Branco", "Rosa"], sizes: ["40x40cm"] }
@@ -99,6 +119,7 @@
 
     let currentOpenId = null;
     let selection = { color: "", size: "" };
+    let currentSlide = 0;
 
     function render() {
         const grid = document.getElementById('main-grid');
@@ -116,6 +137,7 @@
         if (currentOpenId === id) { closeAll(); currentOpenId = null; return; }
         closeAll();
         currentOpenId = id;
+        currentSlide = 0; 
         document.getElementById(`card-${id}`).classList.add('active-card');
         
         const item = products.find(p => p.id === id);
@@ -123,12 +145,15 @@
 
         container.innerHTML = `
             <div class="details-expanded">
-                <div class="view-image">
-                    <img src="${item.nome} ${item.id}.png" onerror="this.src='https://via.placeholder.com/400?text=${item.nome}'">
+                <div class="slide-container">
+                    <button class="slide-arrow arrow-left" onclick="changeSlide(-1, '${item.nome}', ${item.id})">‹</button>
+                    <img id="main-img" src="${item.nome} ${item.id}.png" onerror="this.src='https://via.placeholder.com/400?text=${item.nome}'">
+                    <button class="slide-arrow arrow-right" onclick="changeSlide(1, '${item.nome}', ${item.id})">›</button>
                 </div>
+
                 <div>
-                    <h2>${item.nome}</h2>
-                    <p>Configure o seu orçamento exclusivo:</p>
+                    <h2 style="margin-top:0;">${item.nome}</h2>
+                    <p>Personalize as suas opções:</p>
                     <div style="margin-bottom:20px;">
                         <strong>Escolha a Cor:</strong><br>
                         ${item.cores.map(c => `<div class="color-dot" style="background:${getHex(c)}" onclick="pickColor(this, '${c}', '${item.nome}', ${id})"></div>`).join('')}
@@ -139,7 +164,7 @@
                     </div>
                     <a href="#" id="wa-btn-${id}" class="btn-whatsapp" style="opacity:0.3; pointer-events:none;">
                         <svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.7 17.7 69.4 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.3-16.4-14.6-27.4-32.7-30.7-38.2-3.2-5.6-.4-8.6 2.4-11.4 2.6-2.5 5.6-6.5 8.3-9.8 2.8-3.3 3.7-5.5 5.5-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-                        Solicitar no WhatsApp
+                        Solicitar Orçamento
                     </a>
                 </div>
             </div>
@@ -150,13 +175,30 @@
         }, 100);
     }
 
+    function changeSlide(dir, name, id) {
+        currentSlide += dir;
+        const img = document.getElementById('main-img');
+        
+        let nextSrc = (currentSlide <= 0) 
+            ? `${name} ${id}.png` 
+            : `${name} ${id}-${currentSlide + 1}.png`;
+
+        let test = new Image();
+        test.src = nextSrc;
+        test.onload = () => { img.src = nextSrc; };
+        test.onerror = () => {
+            if (dir > 0) { currentSlide = 0; img.src = `${name} ${id}.png`; }
+            else { currentSlide = 0; }
+        };
+    }
+
     function closeAll() {
         document.querySelectorAll('.product-card').forEach(c => c.classList.remove('active-card'));
-        products.forEach(p => document.getElementById(`box-${p.id}`).innerHTML = '');
+        products.forEach(p => { const el = document.getElementById(`box-${p.id}`); if(el) el.innerHTML = ''; });
     }
 
     function getHex(cor) {
-        const colors = { "Branco": "#fff", "Roxo": "#6A0DAD", "Preto": "#1a1a1a", "Rosa": "#FFB6C1", "Azul": "#4682B4" };
+        const colors = { "Branco": "#fff", "Roxo": "#6A0DAD", "Preto": "#111", "Rosa": "#FFC0CB", "Azul": "#87CEEB" };
         return colors[cor] || "#ddd";
     }
 
@@ -178,14 +220,12 @@
         const btn = document.getElementById(`wa-btn-${id}`);
         if(selection.color && selection.size) {
             btn.style.opacity = "1"; btn.style.pointerEvents = "all";
-            const phone = "5511999999999"; 
-            const msg = `Olá! Gostaria de um orçamento:\n*${name}*\nCor: ${selection.color}\nTamanho: ${selection.size}`;
-            btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            const msg = `Olá! Quero orçar:\n*${name}*\nCor: ${selection.color}\nTamanho: ${selection.size}`;
+            btn.href = `https://wa.me/5511999999999?text=${encodeURIComponent(msg)}`;
         }
     }
 
     window.onload = render;
 </script>
-
 </body>
 </html>
